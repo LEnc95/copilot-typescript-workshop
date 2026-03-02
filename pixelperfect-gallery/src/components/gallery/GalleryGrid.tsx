@@ -27,22 +27,43 @@ export function GalleryGrid({
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [likedPhotos, setLikedPhotos] = useState<Set<string>>(new Set());
 
+  const normalizedSelectedTags: string[] = useMemo((): string[] => {
+    return selectedTags
+      .map((tag: string): string => tag.trim().toLowerCase())
+      .filter((tag: string): boolean => tag.length > 0);
+  }, [selectedTags]);
+
+  const searchTokens: string[] = useMemo((): string[] => {
+    return searchQuery
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((token: string): boolean => token.length > 0);
+  }, [searchQuery]);
+
   // Filter photos based on selected tags and search query
   const filteredPhotos: Photo[] = useMemo((): Photo[] => {
     return mockPhotos.filter((photo: Photo): boolean => {
+      const normalizedPhotoTags: string[] = photo.tags.map((tag: string): string => tag.toLowerCase());
+
       // Filter by tags
-      const matchesTags: boolean = selectedTags.length === 0 ||
-        selectedTags.some((tag: string): boolean => photo.tags.includes(tag.toLowerCase()));
+      const matchesTags: boolean = normalizedSelectedTags.length === 0 ||
+        normalizedSelectedTags.some((tag: string): boolean => normalizedPhotoTags.includes(tag));
+
+      const searchableContent = [
+        photo.title.toLowerCase(),
+        ...normalizedPhotoTags,
+        photo.photographer?.toLowerCase() ?? '',
+        photo.dateTaken?.toLowerCase() ?? ''
+      ].join(' ');
 
       // Filter by search query
-      const matchesSearch: boolean = searchQuery === "" ||
-        photo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        photo.tags.some((tag: string): boolean => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (photo.photographer ? photo.photographer.toLowerCase().includes(searchQuery.toLowerCase()) : false);
+      const matchesSearch: boolean = searchTokens.length === 0 ||
+        searchTokens.every((token: string): boolean => searchableContent.includes(token));
 
       return matchesTags && matchesSearch;
     });
-  }, [searchQuery, selectedTags]);
+  }, [normalizedSelectedTags, searchTokens]);
 
   // Calculate pagination
   const totalPhotos = filteredPhotos.length;
