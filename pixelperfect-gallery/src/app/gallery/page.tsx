@@ -23,6 +23,18 @@ interface SearchDropdownItem {
 
 const MAX_RECENT_SEARCHES = 5;
 
+function getSuggestionLabel(suggestion: SearchSuggestion): string {
+  if (suggestion.type === 'tag') {
+    return `Tag: ${suggestion.value}`;
+  }
+
+  if (suggestion.type === 'photographer') {
+    return `Photographer: ${suggestion.value}`;
+  }
+
+  return `Title: ${suggestion.value}`;
+}
+
 export default function GalleryPage() {
   const searchParams = useSearchParams();
   const initialSearchQuery = searchParams.get('search') ?? '';
@@ -231,18 +243,6 @@ export default function GalleryPage() {
       setIsSearchOpen(false);
       setHighlightedSuggestionIndex(-1);
     }
-  };
-
-  const getSuggestionLabel = (suggestion: SearchSuggestion): string => {
-    if (suggestion.type === 'tag') {
-      return `Tag: ${suggestion.value}`;
-    }
-
-    if (suggestion.type === 'photographer') {
-      return `Photographer: ${suggestion.value}`;
-    }
-
-    return `Title: ${suggestion.value}`;
   };
 
   const showNoResultsState = isSearchOpen && searchQuery.trim().length > 0 && searchDropdownItems.length === 0;
