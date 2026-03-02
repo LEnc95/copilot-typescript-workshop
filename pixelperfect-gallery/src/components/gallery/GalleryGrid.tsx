@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Heart, Download, Share2, Eye, Tag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Photo, mockPhotos } from '@/lib/mock-photo-data';
@@ -28,24 +28,25 @@ export function GalleryGrid({
   const [likedPhotos, setLikedPhotos] = useState<Set<string>>(new Set());
 
   // Filter photos based on selected tags and search query
-  const filteredPhotos = mockPhotos.filter(photo => {
-    // Filter by tags
-    const matchesTags = selectedTags.length === 0 || 
-      selectedTags.some(tag => photo.tags.includes(tag.toLowerCase()));
-    
-    // Filter by search query
-    const matchesSearch = searchQuery === "" ||
-      photo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      photo.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (photo.photographer && photo.photographer.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    return matchesTags && matchesSearch;
-  });
+  const filteredPhotos: Photo[] = useMemo((): Photo[] => {
+    return mockPhotos.filter((photo: Photo): boolean => {
+      // Filter by tags
+      const matchesTags: boolean = selectedTags.length === 0 ||
+        selectedTags.some((tag: string): boolean => photo.tags.includes(tag.toLowerCase()));
+
+      // Filter by search query
+      const matchesSearch: boolean = searchQuery === "" ||
+        photo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        photo.tags.some((tag: string): boolean => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (photo.photographer ? photo.photographer.toLowerCase().includes(searchQuery.toLowerCase()) : false);
+
+      return matchesTags && matchesSearch;
+    });
+  }, [searchQuery, selectedTags]);
 
   // Calculate pagination
   const totalPhotos = filteredPhotos.length;
   const photosPerPage = limit;
-  const totalPages = Math.ceil(totalPhotos / photosPerPage);
   const startIndex = 0;
   const endIndex = currentPage * photosPerPage;
   const displayedPhotos = filteredPhotos.slice(startIndex, endIndex);
