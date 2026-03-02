@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -14,6 +16,11 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
@@ -33,6 +40,10 @@ body {
   }
 }
 
+.dark .page-gradient {
+  background: linear-gradient(to bottom right, #0f172a, #1e293b);
+}
+
 /* ==========================================================================
    UI Component Patterns - Standard CSS for compatibility
    ========================================================================== */
@@ -48,6 +59,10 @@ body {
   .card-base {
     background-color: #1e293b;
   }
+}
+
+.dark .card-base {
+  background-color: #1e293b;
 }
 
 .card-elevated {
@@ -67,6 +82,10 @@ body {
   }
 }
 
+.dark .card-elevated {
+  background-color: #1e293b;
+}
+
 .card-feature {
   background-color: #ffffff;
   padding: 2rem;
@@ -80,6 +99,10 @@ body {
   }
 }
 
+.dark .card-feature {
+  background-color: #1e293b;
+}
+
 .card-stats {
   background-color: #ffffff;
   padding: 1.5rem;
@@ -91,6 +114,10 @@ body {
   .card-stats {
     background-color: #1e293b;
   }
+}
+
+.dark .card-stats {
+  background-color: #1e293b;
 }
 
 /* Button Patterns */
@@ -135,6 +162,15 @@ body {
   }
 }
 
+.dark .btn-secondary {
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+.dark .btn-secondary:hover {
+  background-color: #374151;
+}
+
 .btn-icon {
   padding: 0.25rem;
   color: #9ca3af;
@@ -176,6 +212,14 @@ body {
   .nav-link:hover {
     color: #ffffff;
   }
+}
+
+.dark .nav-link {
+  color: #d1d5db;
+}
+
+.dark .nav-link:hover {
+  color: #ffffff;
 }
 
 .nav-link-active {
@@ -224,6 +268,17 @@ body {
   }
 }
 
+.dark .form-input,
+.dark .form-select {
+  border-color: #4b5563;
+  background-color: #374151;
+  color: #ffffff;
+}
+
+.dark .form-input::placeholder {
+  color: #9ca3af;
+}
+
 /* Status Elements */
 .status-badge {
   display: inline-flex;
@@ -264,6 +319,21 @@ body {
     background-color: #9a3412;
     color: #fed7aa;
   }
+}
+
+.dark .status-active {
+  background-color: #14532d;
+  color: #bbf7d0;
+}
+
+.dark .status-private {
+  background-color: #581c87;
+  color: #e9d5ff;
+}
+
+.dark .status-draft {
+  background-color: #9a3412;
+  color: #fed7aa;
 }
 
 /* Color System Classes */
@@ -321,6 +391,11 @@ body {
   .icon-container-orange { background-color: #9a3412; }
 }
 
+.dark .icon-container-blue { background-color: #1e3a8a; }
+.dark .icon-container-green { background-color: #14532d; }
+.dark .icon-container-purple { background-color: #581c87; }
+.dark .icon-container-orange { background-color: #9a3412; }
+
 /* Hover Patterns */
 .hover-lift {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -348,6 +423,10 @@ body {
   }
 }
 
+.dark .hover-bg:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
 /* Progress Bar */
 .progress-bar {
   width: 100%;
@@ -367,6 +446,10 @@ body {
   .progress-bar {
     background-color: #374151;
   }
+}
+
+.dark .progress-bar {
+  background-color: #374151;
 }
 
 /* Drag and Drop */
@@ -402,6 +485,18 @@ body {
   }
 }
 
+.dark .drop-zone {
+  border-color: #4b5563;
+}
+
+.dark .drop-zone-active {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dark .drop-zone-inactive:hover {
+  border-color: #3b82f6;
+}
+
 /* Table Patterns */
 .table-row {
   border-bottom: 1px solid #e5e7eb;
@@ -420,6 +515,14 @@ body {
   .table-row:hover {
     background-color: rgba(55, 65, 81, 0.5);
   }
+}
+
+.dark .table-row {
+  border-color: #374151;
+}
+
+.dark .table-row:hover {
+  background-color: rgba(55, 65, 81, 0.5);
 }
 
 /* Additional Button Variations */
@@ -455,4 +558,8 @@ body {
   .gallery-card {
     background-color: #1e293b;
   }
+}
+
+.dark .gallery-card {
+  background-color: #1e293b;
 }
